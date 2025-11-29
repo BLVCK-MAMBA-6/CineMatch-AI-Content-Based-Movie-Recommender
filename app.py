@@ -130,7 +130,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # TMDB API Configuration
-TMDB_API_KEY = ""  # Add your TMDB API key here
+# API key is loaded from Streamlit secrets for deployment
+try:
+    TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
+except:
+    TMDB_API_KEY = ""  # Fallback for local development
+    st.warning("⚠️ TMDB API key not found in secrets. Movie posters will not load.")
+
 TMDB_BASE_URL = "https://api.themoviedb.org/3"
 TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
@@ -236,21 +242,6 @@ with st.sidebar:
         </ul>
         </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # API Key input
-    st.markdown("### 🔑 TMDB API Setup")
-    api_key_input = st.text_input(
-        "Enter TMDB API Key",
-        type="password",
-        help="Get a free API key from themoviedb.org"
-    )
-    if api_key_input:
-        TMDB_API_KEY = api_key_input
-        st.success("✅ API Key set!")
-    else:
-        st.info("💡 Add API key to see movie posters")
     
     st.markdown("---")
     
